@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="growbot">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UI-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Growbot</title>
+
+  <link rel="stylesheet" href="css/application.css" media="screen" />
+</head>
+<body>
+  <div ng-controller="MainController as mainCtrl">
+    <h1>{{mainCtrl.title}}</h1>
+    <barchart data="mainCtrl.data"></barchat>
+  </div>
+
+
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/d3/d3.js"></script>
+  <script src="js/directives.js"></script>
+  <script src="js/application.js"></script>
+</body>
+</html>

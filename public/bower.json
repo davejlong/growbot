@@ -1,0 +1,19 @@
+{
+  "name": "growbot-web",
+  "version": "0.0.0",
+  "authors": [
+    "David Long <dave@davejlong.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.20",
+    "d3": "~3.4.10"
+  }
+}
