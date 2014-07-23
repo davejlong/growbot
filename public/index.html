@@ -11,8 +11,13 @@
 </head>
 <body>
   <div ng-controller="MainController as mainCtrl">
-    <h1>{{mainCtrl.title}}</h1>
-    <barchart data="mainCtrl.data"></barchat>
+    <h1>Growbot</h1>
+    <!-- <ul>
+      <li ng-repeat="metric in mainCtrl.metrics | limitTo: 25">
+        <strong>{{metric.time | date: 'medium'}}</strong> {{metric.light}}
+      </li>
+    </ul> -->
+    <barchart data="mainCtrl.metrics"></barchat>
   </div>
 
 

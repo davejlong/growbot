@@ -30,7 +30,7 @@ angular.module 'growbot.directives', []
           height = scope.data.length * (barHeight + barPadding)
           color = d3.scale.category20()
           xScale = d3.scale.linear()
-            .domain [0, d3.max(data, (d) -> d.score)]
+            .domain [0, d3.max(data, (d) -> d.light)]
             .range [0, width]
 
           svg.attr 'height', height
@@ -41,13 +41,13 @@ angular.module 'growbot.directives', []
             .attr 'width', 140
             .attr 'x', Math.round(margin/2)
             .attr 'y', (d, i) -> i * (barHeight + barPadding)
-            .attr 'fill', (d) -> color(d.score)
+            .attr 'fill', (d) -> color(d.light)
             .transition().duration(1000)
-            .attr 'width', (d) -> xScale(d.score)
+            .attr 'width', (d) -> xScale(d.light)
           dataEntered.append 'text'
             .attr 'fill', '#fff'
             .attr 'y', (d, i) -> i * (barHeight + barPadding) + 15
             .attr 'x', 15
-            .text (d) -> "#{d.name} (scored: #{d.score})"
+            .text (d) -> "#{d.time} (light: #{d.light})"
     }
   ]

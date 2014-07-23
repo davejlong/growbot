@@ -3,7 +3,7 @@
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 IPAddress server(192,168,1,98);
-const int serverPort = 9292;
+const int serverPort = 80;
 IPAddress ip(192,168,1,15);
 EthernetClient client;
 
@@ -46,8 +46,8 @@ void loop () {
     client.println();
     client.println(postBody);
     client.stop();
-    delay(5000);
   }
+  delay(30000);
 }
 
 int getLight () {
