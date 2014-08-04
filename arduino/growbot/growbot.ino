@@ -15,13 +15,14 @@ EthernetClient client;
 const int chipSelect = 4;
 
 const int lightPin = 0;
+const int moisturePin = 1;
 
 void setup () {
   if (Ethernet.begin(mac) == 0) {
     Ethernet.begin(mac, ip);
   }
-
-  // Initialize SD card if available
+  
+  pinMode(10, OUTPUT);
   SD.begin(chipSelect);
 
   delay(1000);
@@ -40,20 +41,23 @@ void loop () {
   light=392
   */
   int lightReading = getLight();
+  int moistureReading = getMoisture();
   String postBody = "light=";
-  postBody += lightReading;
+  postBody += getLight();
+  postBody += "&moisture=";
+  postBody += getMoisture();
 
   File dataFile = SD.open("data.log", FILE_WRITE);
   if (dataFile) {
     dataFile.println(postBody);
     dataFile.close();
   }
-
+  
   File accessFile = SD.open("access.log", FILE_WRITE);
   if (accessFile) {
     accessFile.println("Sending request");
   }
-
+  
   if (client.connect(server, serverPort)) {
     client.println("POST /track HTTP/1.1");
     client.print("Host: ");
@@ -79,4 +83,8 @@ void loop () {
 
 int getLight () {
   return analogRead(lightPin);
+}
+
+int getMoisture () {
+  return analogRead(moisturePin);
 }
