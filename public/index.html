@@ -11,19 +11,21 @@
 </head>
 <body>
   <div ng-controller="MainController as mainCtrl">
-    <h1>Growbot</h1>
+    <!--<h1>Growbot</h1>-->
     <!-- <ul>
       <li ng-repeat="metric in mainCtrl.metrics | limitTo: 25">
         <strong>{{metric.time | date: 'medium'}}</strong> {{metric.light}}
       </li>
     </ul> -->
-    <barchart data="mainCtrl.metrics"></barchat>
+    <series-chart data="mainCtrl.metrics" height="250" key="time">
+      <series key="light"></series>
+      <series key="moisture"></series>
+    </series-chart>
   </div>
 
 
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/d3/d3.js"></script>
-  <script src="js/directives.js"></script>
   <script src="js/application.js"></script>
 </body>
 </html>

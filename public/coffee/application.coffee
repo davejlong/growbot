@@ -5,14 +5,17 @@
     if a.time < b.time then -1
     else if a.time > b.time then 1
     else 0
-  map = (metric) -> metric.time = new Date metric.time; metric
+  map = (metric) ->
+    metric.time = new Date metric.time
+    metric.light = parseInt(metric.light)
+    metric
 
   callbacks = []
 
   {
     metrics: []
     load: ->
-      $http.get('http://localhost:5100')
+      $http.get('http://localhost:8080/data.json')
         .success (data) =>
           @metrics = data.map(map).sort(sort)
           @notifyCallbacks()
