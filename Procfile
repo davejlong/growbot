@@ -1,2 +1,2 @@
 couch:  couchdb
-web: rerun "rackup --port $PORT"
+web: rackup --port $PORT
