@@ -14,14 +14,19 @@ EthernetClient client;
 // functions will not work.
 const int chipSelect = 4;
 
-const int lightPin = 0;
-const int moisturePin = 1;
+// The following drives the sensor array
+// sensorPins is a list of pins that are running sensors
+// sensorLabels is the labels to use in the POST request
+// sensorCount is the number of sensors on board
+const int sensorPins[] = { 0, 1 };
+const String sensorLabels[] = { "light", "moisture" };
+const int sensorCount = 2;
 
 void setup () {
   if (Ethernet.begin(mac) == 0) {
     Ethernet.begin(mac, ip);
   }
-  
+
   pinMode(10, OUTPUT);
   SD.begin(chipSelect);
 
@@ -40,37 +45,22 @@ void loop () {
 
   light=392
   */
-  int lightReading = getLight();
-  int moistureReading = getMoisture();
-  String postBody = "light=";
-  postBody += getLight();
-  postBody += "&moisture=";
-  postBody += getMoisture();
+
+  String postBody = readSensors();
 
   File dataFile = SD.open("data.log", FILE_WRITE);
   if (dataFile) {
     dataFile.println(postBody);
     dataFile.close();
   }
-  
+
   File accessFile = SD.open("access.log", FILE_WRITE);
   if (accessFile) {
     accessFile.println("Sending request");
   }
-  
+
   if (client.connect(server, serverPort)) {
-    client.println("POST /track HTTP/1.1");
-    client.print("Host: ");
-    client.print(server);
-    client.print(":");
-    client.println(serverPort);
-    client.println("User-Agent: Arduino/1.0");
-    client.println("Connection: close");
-    client.print("Content-Length: ");
-    client.println(postBody.length());
-    client.println();
-    client.println(postBody);
-    client.stop();
+    sendRequest(postBody);
     accessFile.println("Successfully sent request");
   } else {
     accessFile.println("Couldn't connect to server");
@@ -81,10 +71,28 @@ void loop () {
   delay(30000);
 }
 
-int getLight () {
-  return analogRead(lightPin);
+void sendRequest (String postBody) {
+  client.println("POST /track HTTP/1.1");
+  client.print("Host: ");
+  client.print(server);
+  client.print(":");
+  client.println(serverPort);
+  client.println("User-Agent: Arduino/1.0");
+  client.println("Connection: close");
+  client.print("Content-Length: ");
+  client.println(postBody.length());
+  client.println();
+  client.println(postBody);
+  client.stop();
 }
 
-int getMoisture () {
-  return analogRead(moisturePin);
+String readSensors () {
+  String sensorString = "";
+  for (int i = 0; i < sensorCount; i++) {
+    if (i > 0) { sensorString += "&"; }
+    sensorString += sensorLabels[i];
+    sensorString += "=";
+    sensorString += analogRead(sensorPins[i]);
+  }
+  return sensorString;
 }
